@@ -2,6 +2,9 @@ namespace KatlaSport.DataAccess.Migrations
 {
     using System.Data.Entity.Migrations;
 
+    /// <summary>
+    /// Migration to table with product description, manCode and Price
+    /// </summary>
     public partial class AddProductDescriptionManCodePrice : DbMigration
     {
         public override void Up()
