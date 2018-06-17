@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { HiveListItem } from '../models/hive-list-item';
 import { HiveService } from '../services/hive.service';
 
@@ -18,14 +18,23 @@ export class HiveListComponent implements OnInit {
   }
 
   getHives() {
-    this.hiveService.getHives().subscribe(h => this.hives = h);
+    this.hiveService.getHives()
+      .subscribe(h => this.hives = h);
   }
 
   onDelete(hiveId: number) {
-    var hive = this.hives.find(h => h.id == hiveId);
-    this.hiveService.setHiveStatus(hiveId, true).subscribe(c => hive.isDeleted = true);
+    this.setStatus(hiveId, true);
   }
 
   onRestore(hiveId: number) {
+    this.setStatus(hiveId, false);
+  }
+
+  private setStatus(hiveId: number, status: boolean) {
+    var hive = this.hives
+      .find(h => h.id == hiveId);
+    this.hiveService
+      .setHiveStatus(hiveId,status)
+      .subscribe(c => hive.isDeleted = status);
   }
 }
