@@ -17,10 +17,11 @@ export class HiveSectionFormComponent implements OnInit, OnDestroy {
     private hiveSectionService: HiveSectionService
   ) { }
 
-  hiveSection: HiveSection;
+  hiveSection: HiveSection = new HiveSection(0,"","", false);
   hiveId: number;
   existed = false;
   isLoaded = false;
+  isConflict = false;
 
   sub1: Subscription;
 
@@ -64,7 +65,7 @@ export class HiveSectionFormComponent implements OnInit, OnDestroy {
   }
 
   navigateToHivesSection() {
-    this.router.navigate([`/hive/${this.hiveId}/section`]);
+    this.router.navigate([`/hive/${this.hiveId}/sections`]);
   }
 
   onCancel() {
@@ -78,6 +79,9 @@ export class HiveSectionFormComponent implements OnInit, OnDestroy {
           resp => {
             this.navigateToHivesSection();
           }
+          , error2 => {
+            this.showConflictMessage();
+          }
         );
     }
     else {
@@ -85,6 +89,9 @@ export class HiveSectionFormComponent implements OnInit, OnDestroy {
         .subscribe(
           resp => {
             this.navigateToHivesSection();
+          }
+          , error2 => {
+            this.showConflictMessage();
           }
         );
     }
@@ -106,5 +113,12 @@ export class HiveSectionFormComponent implements OnInit, OnDestroy {
           this.hiveSection.isDeleted = deletedStatus;
         }
       );
+  }
+
+  private showConflictMessage() {
+    this.isConflict = true;
+    window.setTimeout( () => {
+      this.isConflict = false;
+    }, 5000);
   }
 }
