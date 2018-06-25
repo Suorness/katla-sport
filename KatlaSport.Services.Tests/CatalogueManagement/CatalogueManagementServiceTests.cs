@@ -30,6 +30,20 @@ namespace KatlaSport.Services.Tests.CatalogueManagement
         }
 
         [Fact]
+        public void GetProductCategories_NotEmptyCollection_Test()
+        {
+            var context = new Mock<IProductCatalogueContext>();
+            context.Setup(c => c.Categories).ReturnsEntitySet(new ProductCategory[1]
+            { new ProductCategory() });
+
+            var service = new CatalogueManagementService(context.Object);
+
+            var categories = service.GetProductCategories();
+
+            Assert.Equal(1, categories.Count);
+        }
+
+        [Fact]
         public void AddProductCategoryTest()
         {
             var context = new Mock<IProductCatalogueContext>();
